@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Live Topology 대시보드 실행 (IDE 내부 브라우저)",
+      "type": "shell",
+      "command": "python dashboard/server.py",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    }
+  ]
+}

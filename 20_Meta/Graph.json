@@ -1,9 +1,50 @@
 {
-  "nodes": [],
-  "edges": [],
+  "nodes": [
+    { "id": "root", "label": "bosstak Knowledge Hub", "category": "root", "color": "#00FF88", "size": 22, "summary": "외국인 방한 여행객 지방 분산 및 경험 최적화 지식 저장소 메인 루트입니다." },
+    { "id": "icn_gateway", "label": "🛫 인천국제공항 (ICN)", "category": "Gateway", "color": "#00D4FF", "size": 18, "summary": "입국 관문. AREX 직통열차를 통해 서울 허브로 43분 내 논스톱 연결." },
+    { "id": "seoul_hub", "label": "🚄 서울역 (Seoul Hub)", "category": "Gateway", "color": "#00D4FF", "size": 18, "summary": "KTX 전라선/경부선/강릉선이 분기하는 전국 교통 최상위 허브." },
+    { "id": "jeonju_hub", "label": "🏞️ 전주 (Jeonju)", "category": "Regions", "color": "#FFAA00", "size": 16, "summary": "한옥마을 골목길, 경기전, 오방색 전통 비빔밥 및 콩나물국밥 아카이브." },
+    { "id": "busan_hub", "label": "🌊 부산 (Busan)", "category": "Regions", "color": "#00BFFF", "size": 16, "summary": "자갈치시장 노포, 영도 흰여울마을, 감천문화마을, 해운대 해변 아카이브." },
+    { "id": "gangneung_hub", "label": "🌲 강릉 (Gangneung)", "category": "Regions", "color": "#7B61FF", "size": 16, "summary": "안목해변 커피거리, 초당순두부, 오죽헌, 동해안 힐링 아카이브." },
+    { "id": "gyeongju_hub", "label": "🇰🇷 경주 (Gyeongju)", "category": "Regions", "color": "#FF77AA", "size": 15, "summary": "불국사/석굴암 고대 역사 유적과 황리단길 트렌디 골목의 공존." },
+    { "id": "route_optimizer", "label": "⚙️ RouteOptimizer 엔진", "category": "Engine", "color": "#00FFCC", "size": 16, "summary": "Dijkstra 최단 동선 및 환승 리스크 예측 알고리즘 코어 엔진." },
+    { "id": "how_to_eat", "label": "🥢 How to Eat 가이드", "category": "Culture", "color": "#FFD700", "size": 15, "summary": "삼겹살 쌈 싸기, 육회 비비기, 국밥 수란 튜토리얼 등 식문화 번역 데이터." },
+    { "id": "transit_a2z", "label": "🚇 Transit A to Z", "category": "Culture", "color": "#00E5FF", "size": 14, "summary": "교통카드 발급, KTX 승강장 확인, 지방 버스 번호 등 단계별 환승 가이드." },
+    { "id": "paid_itinerary", "label": "💰 $9.99 맞춤형 일정 BM", "category": "Business", "color": "#FF5555", "size": 17, "summary": "소액 결제 기반 분 단위 초개인화 여정 가이드북 온디맨드 생성 BM." },
+    { "id": "pitch_deck", "label": "📊 B2B Case Study Deck", "category": "Business", "color": "#FF5555", "size": 14, "summary": "글로벌 OTA 및 DMO 파트너십 제안용 전주 한옥마을 사례 연구 피치덱." },
+    { "id": "master_template", "label": "📋 Master Template v3.0", "category": "Standard", "color": "#FFFFFF", "size": 13, "summary": "모든 AI 비서들이 준수하는 표준 아카이브 및 스키마 서식." }
+  ],
+  "edges": [
+    { "source": "root", "target": "icn_gateway" },
+    { "source": "root", "target": "route_optimizer" },
+    { "source": "root", "target": "paid_itinerary" },
+    { "source": "root", "target": "master_template" },
+    { "source": "icn_gateway", "target": "seoul_hub" },
+    { "source": "seoul_hub", "target": "jeonju_hub" },
+    { "source": "seoul_hub", "target": "busan_hub" },
+    { "source": "seoul_hub", "target": "gangneung_hub" },
+    { "source": "seoul_hub", "target": "gyeongju_hub" },
+    { "source": "jeonju_hub", "target": "how_to_eat" },
+    { "source": "jeonju_hub", "target": "transit_a2z" },
+    { "source": "busan_hub", "target": "how_to_eat" },
+    { "source": "busan_hub", "target": "transit_a2z" },
+    { "source": "gangneung_hub", "target": "how_to_eat" },
+    { "source": "gangneung_hub", "target": "transit_a2z" },
+    { "source": "gyeongju_hub", "target": "how_to_eat" },
+    { "source": "route_optimizer", "target": "jeonju_hub" },
+    { "source": "route_optimizer", "target": "busan_hub" },
+    { "source": "route_optimizer", "target": "gangneung_hub" },
+    { "source": "route_optimizer", "target": "paid_itinerary" },
+    { "source": "paid_itinerary", "target": "how_to_eat" },
+    { "source": "paid_itinerary", "target": "transit_a2z" },
+    { "source": "paid_itinerary", "target": "pitch_deck" },
+    { "source": "master_template", "target": "jeonju_hub" },
+    { "source": "master_template", "target": "busan_hub" }
+  ],
   "metadata": {
-    "version": "1.0.0",
-    "last_updated": "2026-08-17T15:20:00+09:00",
-    "total_documents": 0
+    "version": "3.0.0",
+    "last_updated": "2026-08-22T20:00:00+09:00",
+    "total_documents": 13,
+    "total_synapses": 25
   }
 }

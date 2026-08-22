@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K-FLOW | Zero-Stress Korea Mobility & Gourmet Guide</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="kflow.css">
+</head>
+<body>
+  <div class="kflow-app-wrapper">
+    
+    <!-- Top Global Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-badge">K</div>
+        <div class="brand-text">
+          <h1>K-FLOW</h1>
+          <span class="tagline">Zero-Stress Korea Traveler App</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="currency-tag">PRO TIER: $9.99</div>
+        <button id="langToggleBtn" class="pill-btn">KR / EN</button>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="app-layout">
+      
+      <!-- LEFT: Simulator Config / Persona Panel -->
+      <aside class="sidebar-panel">
+        <div class="panel-card">
+          <div class="card-header">
+            <span class="icon">✈️</span>
+            <h2>Traveler Setup (여행자 설정)</h2>
+          </div>
+          <p class="card-desc">Simulate how a foreign visitor customizes their regional trip from Incheon Airport.</p>
+          
+          <div class="form-group">
+            <label>📍 Starting Point (출발지)</label>
+            <div class="input-display">🛫 Incheon Int'l Airport (ICN Gateway)</div>
+          </div>
+
+          <div class="form-group">
+            <label>🎯 Destination (목적지 선택)</label>
+            <div class="city-selector">
+              <button class="city-chip active" data-city="jeonju">
+                <span class="emoji">🏞️</span>
+                <span class="name">Jeonju (전주)</span>
+              </button>
+              <button class="city-chip" data-city="busan">
+                <span class="emoji">🌊</span>
+                <span class="name">Busan (부산)</span>
+              </button>
+              <button class="city-chip" data-city="gangneung">
+                <span class="emoji">🌲</span>
+                <span class="name">Gangneung (강릉)</span>
+              </button>
+              <button class="city-chip" data-city="gyeongju">
+                <span class="emoji">🇰🇷</span>
+                <span class="name">Gyeongju (경주)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>🌶️ Spice Tolerance (매운맛 선호)</label>
+            <div class="segmented-control">
+              <button class="seg-btn active" data-spice="mild">Mild (순한맛)</button>
+              <button class="seg-btn" data-spice="medium">Medium</button>
+              <button class="seg-btn" data-spice="hot">Spicy 🔥</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>👥 Travel Vibe (여행 테마)</label>
+            <div class="segmented-control">
+              <button class="seg-btn active" data-vibe="food">Food & Culture</button>
+              <button class="seg-btn" data-vibe="relax">Healing</button>
+            </div>
+          </div>
+
+          <button id="runSimulatorBtn" class="primary-action-btn">
+            <span>⚡ Generate Custom Itinerary</span>
+            <span class="btn-subtext">RouteOptimizer AI Powered</span>
+          </button>
+        </div>
+
+        <!-- B2B & Monetization Metrics Box -->
+        <div class="panel-card biz-card">
+          <div class="card-header">
+            <span class="icon">💼</span>
+            <h2>Business Model (BM 현황)</h2>
+          </div>
+          <div class="biz-stats">
+            <div class="stat-item">
+              <span class="stat-label">Custom Itinerary Price</span>
+              <span class="stat-value">$9.99 USD</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Transit Fear Reduction</span>
+              <span class="stat-value text-green">98.4%</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Local F&B Order Success</span>
+              <span class="stat-value text-blue">100%</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT: Interactive Smartphone Simulator View -->
+      <main class="simulator-main">
+        <div class="device-frame">
+          <div class="device-notch"></div>
+          
+          <!-- Mobile Screen Content -->
+          <div class="device-screen">
+            
+            <!-- Mobile App Top Bar -->
+            <div class="mobile-top-bar">
+              <div class="mobile-time" id="deviceClock">09:41</div>
+              <div class="mobile-icons">
+                <span>📶</span>
+                <span>🔋 100%</span>
+              </div>
+            </div>
+
+            <!-- Mobile App Navigation -->
+            <nav class="mobile-nav">
+              <div class="mobile-greeting">
+                <span class="hello">Welcome to Korea! 👋</span>
+                <h3 id="currentSelectedTripTitle">Incheon ➔ Jeonju Heritage & Food Flow</h3>
+              </div>
+              <div class="badge-tag" id="tripTierBadge">PRO PASS ACTIVATED</div>
+            </nav>
+
+            <!-- Mode Tabs (Timeline / Transit / Gourmet / SOS Card) -->
+            <div class="app-tabs">
+              <button class="tab-btn active" data-tab="timeline">🗺️ Timeline</button>
+              <button class="tab-btn" data-tab="transit">🚇 Transit A-Z</button>
+              <button class="tab-btn" data-tab="gourmet">🥢 How to Eat</button>
+              <button class="tab-btn" data-tab="phrase">🗣️ Ordering Card</button>
+            </div>
+
+            <!-- TAB 1: Step-by-Step Live Timeline -->
+            <section class="tab-content active" id="tab-timeline">
+              <div class="timeline-container" id="timelineList">
+                <!-- Dynamically Rendered -->
+              </div>
+            </section>
+
+            <!-- TAB 2: Transit A to Z Visual Guide -->
+            <section class="tab-content" id="tab-transit">
+              <div class="transit-guide-container" id="transitGuideContent">
+                <!-- Dynamically Rendered -->
+              </div>
+            </section>
+
+            <!-- TAB 3: Gourmet & How to Eat Tutorial -->
+            <section class="tab-content" id="tab-gourmet">
+              <div class="gourmet-container" id="gourmetContent">
+                <!-- Dynamically Rendered -->
+              </div>
+            </section>
+
+            <!-- TAB 4: Restaurant Phrase Card (Show to Staff) -->
+            <section class="tab-content" id="tab-phrase">
+              <div class="phrase-container" id="phraseContent">
+                <!-- Dynamically Rendered -->
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <script src="kflow.js"></script>
+</body>
+</html>

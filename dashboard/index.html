@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect AI x Live Workspace Topology</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- LEFT PANEL: Connect AI Console -->
+    <aside class="left-panel">
+      <!-- Top Header -->
+      <header class="panel-header">
+        <div class="logo-area">
+          <div class="logo-icon"></div>
+          <span class="logo-text">Connect AI</span>
+        </div>
+        <div class="header-controls">
+          <div class="model-select-wrapper">
+            <select id="modelSelector" class="model-select">
+              <option value="gemma4:e2b">gemma4:e2b</option>
+              <option value="gemini-3.7-flash">gemini-3.7-flash</option>
+              <option value="claude-3.5-sonnet">claude-3.5-sonnet</option>
+              <option value="deepseek-r1:70b">deepseek-r1:70b</option>
+            </select>
+          </div>
+          <div class="brain-menu-wrapper">
+            <button class="icon-btn" id="brainBtn" title="Second Brain 관리">🧠</button>
+            <!-- Second Brain Management Dropdown -->
+            <div class="brain-dropdown" id="brainDropdown">
+              <div class="dropdown-header">
+                <span class="dropdown-title">🧠 Second Brain 관리</span>
+              </div>
+              <ul class="dropdown-list">
+                <li class="dropdown-item active-action" id="menuViewTopology" onclick="window.open('/kflow.html', '_blank')">
+                  <div class="item-icon">📱</div>
+                  <div class="item-content">
+                    <span class="item-title">K-FLOW 외국인 앱 시뮬레이터 열기</span>
+                    <span class="item-desc">외국인 시점 분 단위 동선 & How to Eat 시뮬레이션</span>
+                  </div>
+                </li>
+                <li class="dropdown-item" id="menuViewTopologyOld">
+                  <div class="item-icon">📊</div>
+                  <div class="item-content">
+                    <span class="item-title">지식 구조(Topology) 시각화 보기</span>
+                    <span class="item-desc">현재 워크스페이스의 연결 지식 맵을 엽니다.</span>
+                  </div>
+                </li>
+                <li class="dropdown-item" id="menuToggleMode">
+                  <div class="item-icon">🌸</div>
+                  <div class="item-content">
+                    <span class="item-title">지식 모드: <span class="badge-status-on" id="knowledgeModeBadge">🟢 ON</span></span>
+                    <span class="item-desc">지식 기반 응답 ON/OFF 전환</span>
+                  </div>
+                </li>
+                <li class="dropdown-item" id="menuRefreshGit">
+                  <div class="item-icon">🔄</div>
+                  <div class="item-content">
+                    <span class="item-title">지식 새로고침</span>
+                    <span class="item-desc">현재: <code id="currentGitRepo">wonseokjung/p-reinforce-wiki.git</code></span>
+                  </div>
+                </li>
+                <li class="dropdown-item" id="menuChangeGit">
+                  <div class="item-icon">🔗</div>
+                  <div class="item-content">
+                    <span class="item-title">다른 깃허브로 변경</span>
+                    <span class="item-desc">새로운 지식 저장소 URL 입력</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <button class="icon-btn" id="settingsBtn" title="설정">⚙️</button>
+          <button class="icon-btn" id="newChatBtn" title="새 대화">+</button>
+        </div>
+      </header>
+
+      <!-- Platform Notification Banner -->
+      <div class="platform-banner">
+        <span class="banner-emoji">👉</span>
+        <span class="banner-text">답안이 A.U 플랫폼 서버로 전송되었습니다. 채점은 플랫폼에서 진행됩니다.</span>
+      </div>
+
+      <!-- Chat Stream -->
+      <div class="chat-stream" id="chatStream">
+        <!-- Connect AI Persona Message -->
+        <div class="message-group ai-group">
+          <div class="avatar-badge ai-badge">+</div>
+          <div class="message-meta">
+            <span class="sender-name">Connect AI</span>
+            <span class="timestamp" id="initialTime1">오후 07:52</span>
+          </div>
+          
+          <!-- Matrix System Log Card -->
+          <div class="matrix-terminal-card" id="matrixLogCard">
+            <div class="log-line">[SYSTEM] MATRIX UPLINK ESTABLISHED...</div>
+            <div class="log-line highlight">[SYSTEM] DOWNLOADING BRAIN PACK: Sample Pack / Combat AI</div>
+            <div class="log-line progress">
+              <span class="bar">[SYSTEM] <span class="ascii-bar">████████████████</span> <span class="num">100</span>% COMPLETE</span>
+            </div>
+            <div class="log-line success">[SYSTEM] KNOWLEDGE INJECTED TO LOCAL NEURAL NET</div>
+          </div>
+        </div>
+
+        <!-- User Message -->
+        <div class="message-group user-group">
+          <div class="avatar-badge user-badge">👤</div>
+          <div class="message-meta">
+            <span class="sender-name">You</span>
+            <span class="timestamp" id="initialTime2">오후 07:52</span>
+          </div>
+          <div class="user-bubble">
+            [A.U 히든 커맨드: 당신은 방금 마스터로부터 'Sample Pack / Combat AI' 지식 팩을 뇌에 주입받았습니다. 영화 매트릭스에서 무술을 주입받은 네오처럼 쿨하게 딱 한마디만 하십시오. "나 방금 Sample Pack / Combat AI 지식을 마스터했어. (I know Sample Pack / Combat AI.) 앞으로 이와 관련된 건 무엇이든 물어봐." 절대 쓸데없는 안부인사나 부가설명을 덧붙이지 마십시오.]
+          </div>
+        </div>
+
+        <!-- AI Response -->
+        <div class="message-group ai-group">
+          <div class="avatar-badge ai-badge">+</div>
+          <div class="message-meta">
+            <span class="sender-name">Connect AI</span>
+            <span class="timestamp" id="initialTime3">오후 07:52</span>
+          </div>
+          <div class="ai-bubble">
+            I know Sample Pack / Combat AI. Ask me anything related to this.
+          </div>
+          <div class="action-row">
+            <button class="regen-btn" id="regenBtn">🔄 재생성</button>
+          </div>
+        </div>
+
+        <!-- P-Reinforce Sync Card -->
+        <div class="message-group ai-group">
+          <div class="avatar-badge ai-badge">+</div>
+          <div class="message-meta">
+            <span class="sender-name">Connect AI</span>
+            <span class="timestamp" id="initialTime4">오후 07:53</span>
+          </div>
+          <div class="sync-card">
+            <span class="sync-icon">✅</span>
+            <span class="sync-text"><strong>[P-Reinforce Sync]</strong> 주입된 지식을 글로벌 두뇌(GitHub)에 안전하게 커밋 및 동기화 완료했습니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Toolbar -->
+      <div class="quick-actions">
+        <button class="quick-btn neon-green" id="injectCombatBtn">⚡ Combat AI 주입</button>
+        <button class="quick-btn neon-blue" id="injectCustomBtn">🧠 새 지식 주입</button>
+        <button class="quick-btn neon-purple" id="syncGitBtn">🚀 P-Reinforce Sync</button>
+        <button class="quick-btn" id="clearChatBtn">🧹 로그 정리</button>
+      </div>
+
+      <!-- Chat Input Area -->
+      <div class="chat-input-container">
+        <textarea id="chatInput" placeholder="질문을 입력하거나 지식 팩을 투척하세요... (Enter로 전송)"></textarea>
+        <button id="sendBtn" class="send-btn" title="전송">➔</button>
+      </div>
+    </aside>
+
+    <!-- RIGHT PANEL: Live Workspace Topology -->
+    <main class="right-panel">
+      <!-- Topology Header Overlay -->
+      <div class="topology-header">
+        <div class="topology-title-group">
+          <h1 class="topology-title">✦ Live Workspace Topology</h1>
+          <div class="topology-stats">
+            <span class="stat-pulse"></span>
+            <span id="nodeCount">21</span> nodes · <span id="synapseCount">44</span> synapses
+          </div>
+        </div>
+        <div class="topology-toolbar">
+          <button class="tool-btn" id="btnFit" title="화면 맞춤">🎯 화면 맞춤</button>
+          <button class="tool-btn" id="btnRandomNode" title="신규 노드 실시간 추가">➕ 노드 주입</button>
+          <button class="tool-btn" id="btnPulse" title="시냅스 펄스 방출">⚡ 시냅스 펄스</button>
+          <button class="tool-btn" id="btnFilter" title="카테고리 필터">🎛️ 필터</button>
+        </div>
+      </div>
+
+      <!-- Topology Canvas Area -->
+      <div class="canvas-container" id="canvasContainer">
+        <canvas id="topologyCanvas"></canvas>
+      </div>
+
+      <!-- Node Detail Modal (Karpathy Wiki Inspector) -->
+      <div class="node-modal" id="nodeModal">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <span class="modal-badge" id="modalCategory">Topics</span>
+            <h2 class="modal-title" id="modalTitle">Sample_Pack_Combat</h2>
+          </div>
+          <button class="modal-close" id="modalClose">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="meta-tags">
+            <span class="tag">UUID: <code id="modalUuid">c8a2-41f0-9b</code></span>
+            <span class="tag">Confidence: <strong id="modalConfidence">98.4%</strong></span>
+            <span class="tag">Status: <span class="status-live">Synchronized</span></span>
+          </div>
+          
+          <div class="wiki-section">
+            <h3>📌 한 줄 통찰 (The Karpathy Summary)</h3>
+            <blockquote id="modalSummary">
+              Combat AI 및 전술적 프롬프트 엔지니어링 패턴 지식 팩입니다.
+            </blockquote>
+          </div>
+
+          <div class="wiki-section">
+            <h3>🔗 시냅스 연결망 (Connected Synapses)</h3>
+            <ul class="synapse-list" id="modalSynapses">
+              <!-- Dynamically populated -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="topology.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
