@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K-ROUTE | All-in-One Korea Travel & Mobility Map</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="kroute_app.css">
+</head>
+<body>
+  <div class="kroute-container">
+    
+    <!-- Top Global App Bar -->
+    <header class="app-top-header">
+      <div class="brand-group">
+        <div class="brand-logo">🗺️</div>
+        <div>
+          <h1 class="brand-name">K-ROUTE</h1>
+          <p class="brand-sub">Korea Transit & Gourmet Map for Global Travelers</p>
+        </div>
+      </div>
+      <div class="top-nav-actions">
+        <div class="live-exchange-chip">🇰🇷 1 USD ≈ ₩1,350</div>
+        <button class="pro-pass-btn" id="proPassModalBtn">✨ PRO Pass ($9.99)</button>
+        <div class="avatar-circle">🌍</div>
+      </div>
+    </header>
+
+    <!-- Main App Layout: Split View (Interactive Map + Feature Drawer) -->
+    <main class="app-main-grid">
+      
+      <!-- LEFT: Search & Feature Control Bar -->
+      <aside class="sidebar-controls">
+        
+        <!-- Search & Route Input Box (Like Naver/Kakao Map) -->
+        <div class="search-route-card">
+          <div class="search-title-row">
+            <span class="badge-pill">TRANSIT FINDER</span>
+            <span class="sub-indicator">⚡ Live K-Transit API</span>
+          </div>
+
+          <div class="route-input-group">
+            <div class="route-dot-line">
+              <span class="dot origin-dot"></span>
+              <span class="line"></span>
+              <span class="dot dest-dot"></span>
+            </div>
+            <div class="route-inputs">
+              <div class="input-wrap">
+                <input type="text" id="originInput" value="🛫 Incheon Int'l Airport (ICN T1)" placeholder="Where are you starting?">
+              </div>
+              <div class="input-wrap">
+                <select id="destSelect" class="styled-select">
+                  <option value="jeonju_hanok">🏞️ Jeonju Hanok Village (전주 한옥마을)</option>
+                  <option value="busan_haeundae">🌊 Busan Haeundae & Jagalchi (부산 해운대/자갈치)</option>
+                  <option value="gangneung_anmok">🌲 Gangneung Anmok Beach & Cafe (강릉 안목해변)</option>
+                  <option value="gyeongju_hwangridan">🇰🇷 Gyeongju Royal Tombs & Hwangridan (경주 황리단길)</option>
+                  <option value="seoul_myeongdong">🏙️ Seoul Myeongdong & N-Tower (서울 명동)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transport Mode Filter Chips -->
+          <div class="transport-filter-row">
+            <button class="mode-chip active" data-mode="all">⚡ Best Flow</button>
+            <button class="mode-chip" data-mode="train">🚄 KTX / Train</button>
+            <button class="mode-chip" data-mode="subway">🚇 Subway</button>
+            <button class="mode-chip" data-mode="bus">🚌 Bus</button>
+            <button class="mode-chip" data-mode="taxi">🚕 Taxi</button>
+          </div>
+
+          <button id="findRouteBtn" class="search-action-btn">
+            🔍 Find All Routes & Live Cost
+          </button>
+        </div>
+
+        <!-- 4 Core Navigation Tabs -->
+        <div class="feature-nav-bar">
+          <button class="feature-tab-btn active" data-view="transit">
+            <span class="icon">🧭</span>
+            <span>Transit & ETA</span>
+          </button>
+          <button class="feature-tab-btn" data-view="spots">
+            <span class="icon">🎬</span>
+            <span>K-Drama & Spots</span>
+          </button>
+          <button class="feature-tab-btn" data-view="gourmet">
+            <span class="icon">🥢</span>
+            <span>How to Eat & Order</span>
+          </button>
+          <button class="feature-tab-btn" data-view="custom_schedule">
+            <span class="icon">💎</span>
+            <span>AI Custom Schedule</span>
+          </button>
+        </div>
+
+        <!-- Dynamic Content Drawer Area -->
+        <div class="drawer-scroll-area">
+          
+          <!-- VIEW 1: TRANSIT & ETA / COST -->
+          <section class="view-panel active" id="view-transit">
+            <div class="summary-stat-banner">
+              <div class="stat-box">
+                <span class="lbl">TOTAL ETA</span>
+                <span class="val highlight" id="routeTotalTime">2h 48m</span>
+              </div>
+              <div class="stat-box">
+                <span class="lbl">EST. TOTAL FARE</span>
+                <span class="val" id="routeTotalFare">₩44,800 (~$33.20)</span>
+              </div>
+              <div class="stat-box">
+                <span class="lbl">TRANSFERS</span>
+                <span class="val" id="routeTransfers">2 Times</span>
+              </div>
+            </div>
+
+            <div class="route-step-timeline" id="transitStepsContainer">
+              <!-- Dynamically populated -->
+            </div>
+          </section>
+
+          <!-- VIEW 2: K-DRAMA & REGIONAL ATTRACTIONS -->
+          <section class="view-panel" id="view-spots">
+            <div class="section-intro-card">
+              <h3>🎬 K-Culture & Iconic Locations</h3>
+              <p>Explore famous K-Drama filming spots, historical monuments, and hidden photography angles.</p>
+            </div>
+            <div class="spots-card-grid" id="spotsCardContainer">
+              <!-- Dynamically populated -->
+            </div>
+          </section>
+
+          <!-- VIEW 3: GOURMET & HOW TO EAT GUIDE -->
+          <section class="view-panel" id="view-gourmet">
+            <div class="section-intro-card food-theme">
+              <h3>🥢 Authentic Korean Food & Ssam Builder</h3>
+              <p>Learn how to order without photo menus, adjust spice levels, and eat like a true local!</p>
+            </div>
+
+            <!-- Interactive Ssam Wrap Builder Game/Widget -->
+            <div class="interactive-ssam-widget" id="ssamWidget">
+              <div class="ssam-title">🥬 Interactive "Ssam (쌈)" Wrap Builder</div>
+              <p class="ssam-desc">Tap ingredients in order to build your perfect Korean wrap!</p>
+              <div class="ssam-plate" id="ssamPlate">
+                <div class="plate-base">🍽️ Tap ingredients below to layer:</div>
+                <div class="ssam-layers" id="ssamLayers"></div>
+              </div>
+              <div class="ingredient-buttons">
+                <button class="ing-btn" data-ing="🥬 Lettuce (상추)">🥬 Lettuce</button>
+                <button class="ing-btn" data-ing="🍃 Perilla Leaf (깻잎)">🍃 Perilla Leaf</button>
+                <button class="ing-btn" data-ing="🥩 Grilled Meat (삼겹살/갈비)">🥩 Grilled Meat</button>
+                <button class="ing-btn" data-ing="🫙 Ssamjang Sauce (쌈장)">🫙 Ssamjang</button>
+                <button class="ing-btn" data-ing="🧄 Garlic & Pepper (구운 마늘)">🧄 Grilled Garlic</button>
+                <button class="ing-reset-btn" id="resetSsamBtn">🔄 Clear Wrap</button>
+              </div>
+            </div>
+
+            <div class="food-guide-cards" id="gourmetCardContainer">
+              <!-- Dynamically populated -->
+            </div>
+          </section>
+
+          <!-- VIEW 4: PRO CUSTOM ITINERARY -->
+          <section class="view-panel" id="view-custom_schedule">
+            <div class="pro-itinerary-header">
+              <div class="pro-badge">PRO SUBSCRIBER FEATURE</div>
+              <h2>🤖 Hyper-Personalized AI Travel Schedule</h2>
+              <p>RouteOptimizer calculates your custom time-blocked itinerary based on your pace and taste.</p>
+            </div>
+
+            <div class="schedule-customizer-box">
+              <div class="form-row">
+                <label>Pace Style:</label>
+                <div class="pill-selectors" id="paceSelector">
+                  <button class="pill active" data-pace="balanced">Balanced</button>
+                  <button class="pill" data-pace="intense">Action-Packed</button>
+                  <button class="pill" data-pace="relaxed">Slow Travel</button>
+                </div>
+              </div>
+              <button class="pro-generate-btn" id="generateCustomScheduleBtn">
+                ✨ Generate 1-Day Custom Schedule
+              </button>
+            </div>
+
+            <div class="custom-schedule-results" id="customScheduleResults">
+              <!-- Dynamically rendered custom schedule -->
+            </div>
+          </section>
+
+        </div>
+      </aside>
+
+      <!-- RIGHT: Interactive Visual Map View -->
+      <section class="map-viewport">
+        <div class="map-overlay-header">
+          <div class="map-mode-tag">🛰️ Live Geo-Map Simulator</div>
+          <div class="weather-widget">☀️ Seoul/Jeonju 22°C Clear</div>
+        </div>
+
+        <!-- Simulated Map Canvas / Visual Area -->
+        <div class="simulated-map-canvas" id="mapCanvas">
+          <div class="korea-map-art">
+            
+            <!-- Route Polyline SVG -->
+            <svg class="map-svg-layer" viewBox="0 0 800 600">
+              <path id="routePathSvg" class="route-line-glow" d="M 120 180 Q 220 220 280 200 T 360 380" />
+              <circle cx="120" cy="180" r="8" class="map-node node-origin" />
+              <circle cx="280" cy="200" r="8" class="map-node node-hub" />
+              <circle id="destMapCircle" cx="360" cy="380" r="10" class="map-node node-dest" />
+            </svg>
+
+            <!-- Map Markers -->
+            <div class="map-pin pin-icn" style="top: 145px; left: 80px;">
+              <span class="pin-badge">🛫 ICN Airport</span>
+            </div>
+            <div class="map-pin pin-seoul" style="top: 165px; left: 250px;">
+              <span class="pin-badge">🚄 Seoul Station Hub</span>
+            </div>
+            <div class="map-pin pin-dest" id="destMapPin" style="top: 345px; left: 330px;">
+              <span class="pin-badge" id="destMapPinText">🏞️ Jeonju Station / Hanok</span>
+            </div>
+          </div>
+
+          <!-- Bottom Floating Quick Card on Map -->
+          <div class="map-floating-card" id="mapFloatingCard">
+            <div class="floating-left">
+              <span class="live-pill">CURRENT STEP</span>
+              <h4 id="floatingStepTitle">AREX Direct Train to Seoul Station</h4>
+              <p id="floatingStepDesc">Board B1 Express Line · Non-stop 43 mins · Departs every 30m</p>
+            </div>
+            <button class="step-nav-btn" id="nextStepBtn">Next Step ➔</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="kroute_app.js"></script>
+</body>
+</html>
