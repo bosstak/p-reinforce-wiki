@@ -3,11 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>K-ROUTE | All-in-One Korea Travel & Mobility Map</title>
+  <title>K-ROUTE | Real Map & Subway/Bus Transit Navigator</title>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet.js Real World Map Library -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <link rel="stylesheet" href="kroute_app.css">
 </head>
 <body>
@@ -19,7 +24,7 @@
         <div class="brand-logo">🗺️</div>
         <div>
           <h1 class="brand-name">K-ROUTE</h1>
-          <p class="brand-sub">Korea Transit & Gourmet Map for Global Travelers</p>
+          <p class="brand-sub">Real Korea Map, Subway & Bus Navigator for Foreigners</p>
         </div>
       </div>
       <div class="top-nav-actions">
@@ -38,8 +43,8 @@
         <!-- Search & Route Input Box (Like Naver/Kakao Map) -->
         <div class="search-route-card">
           <div class="search-title-row">
-            <span class="badge-pill">TRANSIT FINDER</span>
-            <span class="sub-indicator">⚡ Live K-Transit API</span>
+            <span class="badge-pill">LIVE NAVIGATOR</span>
+            <span class="sub-indicator">🟢 Real GPS & Transit API</span>
           </div>
 
           <div class="route-input-group">
@@ -66,35 +71,39 @@
 
           <!-- Transport Mode Filter Chips -->
           <div class="transport-filter-row">
-            <button class="mode-chip active" data-mode="all">⚡ Best Flow</button>
-            <button class="mode-chip" data-mode="train">🚄 KTX / Train</button>
+            <button class="mode-chip active" data-mode="all">⚡ Optimal Route</button>
+            <button class="mode-chip" data-mode="train">🚄 KTX Express</button>
             <button class="mode-chip" data-mode="subway">🚇 Subway</button>
             <button class="mode-chip" data-mode="bus">🚌 Bus</button>
             <button class="mode-chip" data-mode="taxi">🚕 Taxi</button>
           </div>
 
           <button id="findRouteBtn" class="search-action-btn">
-            🔍 Find All Routes & Live Cost
+            🔍 Calculate Route on Real Map
           </button>
         </div>
 
-        <!-- 4 Core Navigation Tabs -->
+        <!-- 5 Core Navigation Tabs -->
         <div class="feature-nav-bar">
           <button class="feature-tab-btn active" data-view="transit">
             <span class="icon">🧭</span>
             <span>Transit & ETA</span>
           </button>
+          <button class="feature-tab-btn" data-view="subway_map">
+            <span class="icon">🚇</span>
+            <span>Subway Map</span>
+          </button>
+          <button class="feature-tab-btn" data-view="bus_route">
+            <span class="icon">🚌</span>
+            <span>Bus Stops</span>
+          </button>
           <button class="feature-tab-btn" data-view="spots">
             <span class="icon">🎬</span>
-            <span>K-Drama & Spots</span>
+            <span>K-Drama</span>
           </button>
           <button class="feature-tab-btn" data-view="gourmet">
             <span class="icon">🥢</span>
-            <span>How to Eat & Order</span>
-          </button>
-          <button class="feature-tab-btn" data-view="custom_schedule">
-            <span class="icon">💎</span>
-            <span>AI Custom Schedule</span>
+            <span>How to Eat</span>
           </button>
         </div>
 
@@ -123,7 +132,38 @@
             </div>
           </section>
 
-          <!-- VIEW 2: K-DRAMA & REGIONAL ATTRACTIONS -->
+          <!-- VIEW 2: SUBWAY MAP & FAST TRANSFER GUIDE -->
+          <section class="view-panel" id="view-subway_map">
+            <div class="section-intro-card">
+              <h3>🚇 Subway Lines & Fast Transfer Guide</h3>
+              <p>English & Korean station names, line colors, and optimal car numbers for 1-minute fast transfers!</p>
+            </div>
+            <div class="subway-line-selector">
+              <button class="sub-line-btn active" data-line="arex">✈️ AREX (Airport)</button>
+              <button class="sub-line-btn line-1" data-line="line1">Line 1 (Dark Blue)</button>
+              <button class="sub-line-btn line-2" data-line="line2">Line 2 (Green Loop)</button>
+              <button class="sub-line-btn line-4" data-line="line4">Line 4 (Light Blue)</button>
+            </div>
+            <div class="subway-station-list" id="subwayStationList">
+              <!-- Dynamically populated -->
+            </div>
+          </section>
+
+          <!-- VIEW 3: BUS STOPS & REAL-TIME TRACKER -->
+          <section class="view-panel" id="view-bus_route">
+            <div class="section-intro-card bus-theme">
+              <h3>🚌 Local Bus Route & Stop Tracker</h3>
+              <p>Step-by-step stops from the KTX station to major local attractions with real-time arrival estimates.</p>
+            </div>
+            <div class="bus-route-header-card" id="busRouteHeader">
+              <!-- Dynamically populated -->
+            </div>
+            <div class="bus-stop-sequence" id="busStopSequence">
+              <!-- Dynamically populated -->
+            </div>
+          </section>
+
+          <!-- VIEW 4: K-DRAMA & REGIONAL ATTRACTIONS -->
           <section class="view-panel" id="view-spots">
             <div class="section-intro-card">
               <h3>🎬 K-Culture & Iconic Locations</h3>
@@ -134,7 +174,7 @@
             </div>
           </section>
 
-          <!-- VIEW 3: GOURMET & HOW TO EAT GUIDE -->
+          <!-- VIEW 5: GOURMET & HOW TO EAT GUIDE -->
           <section class="view-panel" id="view-gourmet">
             <div class="section-intro-card food-theme">
               <h3>🥢 Authentic Korean Food & Ssam Builder</h3>
@@ -164,74 +204,32 @@
             </div>
           </section>
 
-          <!-- VIEW 4: PRO CUSTOM ITINERARY -->
-          <section class="view-panel" id="view-custom_schedule">
-            <div class="pro-itinerary-header">
-              <div class="pro-badge">PRO SUBSCRIBER FEATURE</div>
-              <h2>🤖 Hyper-Personalized AI Travel Schedule</h2>
-              <p>RouteOptimizer calculates your custom time-blocked itinerary based on your pace and taste.</p>
-            </div>
-
-            <div class="schedule-customizer-box">
-              <div class="form-row">
-                <label>Pace Style:</label>
-                <div class="pill-selectors" id="paceSelector">
-                  <button class="pill active" data-pace="balanced">Balanced</button>
-                  <button class="pill" data-pace="intense">Action-Packed</button>
-                  <button class="pill" data-pace="relaxed">Slow Travel</button>
-                </div>
-              </div>
-              <button class="pro-generate-btn" id="generateCustomScheduleBtn">
-                ✨ Generate 1-Day Custom Schedule
-              </button>
-            </div>
-
-            <div class="custom-schedule-results" id="customScheduleResults">
-              <!-- Dynamically rendered custom schedule -->
-            </div>
-          </section>
-
         </div>
       </aside>
 
-      <!-- RIGHT: Interactive Visual Map View -->
+      <!-- RIGHT: Interactive Real-World Map View (Leaflet + Street Layer) -->
       <section class="map-viewport">
         <div class="map-overlay-header">
-          <div class="map-mode-tag">🛰️ Live Geo-Map Simulator</div>
+          <div class="map-layer-selector">
+            <button class="map-mode-tag active" id="btnLayerStreet">🗺️ Real Street Map</button>
+            <button class="map-mode-tag" id="btnLayerSubway">🚇 Subway Overlay</button>
+            <button class="map-mode-tag" id="btnLayerSatellite">🛰️ Satellite View</button>
+          </div>
           <div class="weather-widget">☀️ Seoul/Jeonju 22°C Clear</div>
         </div>
 
-        <!-- Simulated Map Canvas / Visual Area -->
-        <div class="simulated-map-canvas" id="mapCanvas">
-          <div class="korea-map-art">
-            
-            <!-- Route Polyline SVG -->
-            <svg class="map-svg-layer" viewBox="0 0 800 600">
-              <path id="routePathSvg" class="route-line-glow" d="M 120 180 Q 220 220 280 200 T 360 380" />
-              <circle cx="120" cy="180" r="8" class="map-node node-origin" />
-              <circle cx="280" cy="200" r="8" class="map-node node-hub" />
-              <circle id="destMapCircle" cx="360" cy="380" r="10" class="map-node node-dest" />
-            </svg>
+        <!-- Real Leaflet Map Container -->
+        <div id="realLeafletMap" class="real-leaflet-map-canvas"></div>
 
-            <!-- Map Markers -->
-            <div class="map-pin pin-icn" style="top: 145px; left: 80px;">
-              <span class="pin-badge">🛫 ICN Airport</span>
-            </div>
-            <div class="map-pin pin-seoul" style="top: 165px; left: 250px;">
-              <span class="pin-badge">🚄 Seoul Station Hub</span>
-            </div>
-            <div class="map-pin pin-dest" id="destMapPin" style="top: 345px; left: 330px;">
-              <span class="pin-badge" id="destMapPinText">🏞️ Jeonju Station / Hanok</span>
-            </div>
+        <!-- Bottom Floating Quick Step Card on Map -->
+        <div class="map-floating-card" id="mapFloatingCard">
+          <div class="floating-left">
+            <span class="live-pill">CURRENT STEP</span>
+            <h4 id="floatingStepTitle">AREX Direct Train to Seoul Station</h4>
+            <p id="floatingStepDesc">Board B1 Express Line · Non-stop 43 mins · Departs every 30m</p>
           </div>
-
-          <!-- Bottom Floating Quick Card on Map -->
-          <div class="map-floating-card" id="mapFloatingCard">
-            <div class="floating-left">
-              <span class="live-pill">CURRENT STEP</span>
-              <h4 id="floatingStepTitle">AREX Direct Train to Seoul Station</h4>
-              <p id="floatingStepDesc">Board B1 Express Line · Non-stop 43 mins · Departs every 30m</p>
-            </div>
+          <div class="floating-right-actions">
+            <button class="step-nav-btn" id="zoomStepBtn">🔍 Focus Map</button>
             <button class="step-nav-btn" id="nextStepBtn">Next Step ➔</button>
           </div>
         </div>
